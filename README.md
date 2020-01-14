@@ -1,12 +1,9 @@
 # Django Rest Password Reset
 
-[![PyPI version](https://badge.fury.io/py/django-rest-passwordreset.svg)](https://badge.fury.io/py/django-rest-passwordreset)
-[![Build Status](https://travis-ci.org/anexia-it/django-rest-passwordreset.svg?branch=master)](https://travis-ci.org/anexia-it/django-rest-passwordreset)
-
 This python package provides a simple password reset strategy for django rest framework, where users can request password
 reset tokens via their registered e-mail address.
 
-Crdits - https://github.com/anexia-it/django-rest-passwordreset
+Credits - https://github.com/anexia-it/django-rest-passwordreset
 
 The main idea behind this package is to not make any assumptions about how the token is delivered to the end-user (e-mail, text-message, etc...) and to major issues in the origin package.
 Also, this package provides a signal that can be reacted on (e.g., by sending an e-mail or a text message).
