@@ -9,9 +9,9 @@ __all__ = [
 ]
 
 
-class EmailSerializer(serializers.Serializer):
+class EmailUsernameSerializer(serializers.Serializer):
     email = serializers.EmailField()
-
+    username = serializers.CharField()
 
 class PasswordTokenSerializer(serializers.Serializer):
     password = serializers.CharField(label=_("Password"), style={'input_type': 'password'})

@@ -9,7 +9,7 @@ from rest_framework import status, serializers, exceptions
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
-from django_rest_resetpassword.serializers import EmailSerializer, PasswordTokenSerializer, TokenSerializer
+from django_rest_resetpassword.serializers import EmailUsernameSerializer, PasswordTokenSerializer, TokenSerializer
 from django_rest_resetpassword.models import ResetPasswordToken, clear_expired, get_password_reset_token_expiry_time, \
     get_password_reset_lookup_field
 from django_rest_resetpassword.signals import reset_password_token_created, pre_password_reset, post_password_reset
@@ -150,12 +150,13 @@ class ResetPasswordRequestToken(GenericAPIView):
     """
     throttle_classes = ()
     permission_classes = ()
-    serializer_class = EmailSerializer
+    serializer_class = EmailUsernameSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data['email']
+        username = serializer.validated_data['username']
 
         # before we continue, delete all existing expired tokens
         password_reset_token_validation_time = get_password_reset_token_expiry_time()
@@ -167,9 +168,10 @@ class ResetPasswordRequestToken(GenericAPIView):
         # delete all tokens where created_at < now - 24 hours
         clear_expired(now_minus_expiry_time)
 
-        # find a user by email address (case insensitive search)
+        # find a user by username or email address (case insensitive search)
         users = User.objects.filter(
-            **{'{}__iexact'.format(get_password_reset_lookup_field()): email})
+            **{'{}__iexact'.format(get_password_reset_lookup_field()): email}) | User.objects.filter(
+            **{'{}__iexact'.format('username'): username})
 
         active_user_found = False
 
