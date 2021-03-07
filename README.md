@@ -147,10 +147,10 @@ The following settings can be set in Djangos `settings.py` file:
 
 ## Custom Email Lookup
 
-By default, `email` lookup is used to find the user instance. You can change that by adding
+By default, `email` lookup is used to find the user instance. You can change that or add more matching fields by adding
 
 ```python
-DJANGO_REST_LOOKUP_FIELD = 'custom_email_field'
+DJANGO_REST_LOOKUP_FIELDS = ['custom_email_field', 'other_lookup_field']
 ```
 
 into Django settings.py file.
