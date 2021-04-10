@@ -171,7 +171,7 @@ class ResetPasswordRequestToken(GenericAPIView):
 
     throttle_classes = ()
     permission_classes = ()
-    serializer_class = EmailUsernameSerializer
+    serializer_class = EmailSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
