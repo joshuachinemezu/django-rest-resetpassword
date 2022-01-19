@@ -61,6 +61,12 @@ class ResetPasswordToken(models.Model):
         default="",
         blank=True,
     )
+    origin = models.CharField(
+        max_length=256,
+        verbose_name=_("Request Origin"),
+        default="",
+        blank=True,
+    )
 
     def save(self, *args, **kwargs):
         if not self.key:
