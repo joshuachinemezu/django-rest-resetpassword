@@ -5,7 +5,7 @@ from django.contrib.auth.password_validation import (
     validate_password,
     get_password_validators,
 )
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.conf import settings
 from django.db.models import Q
