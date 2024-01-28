@@ -5,7 +5,7 @@ from django.contrib.auth.password_validation import (
     validate_password,
     get_password_validators,
 )
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.conf import settings
 from django.db.models import Q
@@ -46,6 +46,9 @@ HTTP_USER_AGENT_HEADER = getattr(
 )
 HTTP_IP_ADDRESS_HEADER = getattr(
     settings, "DJANGO_REST_RESETPASSWORD_IP_ADDRESS_HEADER", "REMOTE_ADDR"
+)
+HTTP_ORIGIN_HEADER = getattr(
+    settings, "DJANGO_REST_RESETPASSWORD_ORIGIN_HEADER", "HTTP_ORIGIN"
 )
 
 
@@ -171,7 +174,7 @@ class ResetPasswordRequestToken(GenericAPIView):
 
     throttle_classes = ()
     permission_classes = ()
-    serializer_class = EmailUsernameSerializer
+    serializer_class = EmailSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -242,6 +245,7 @@ class ResetPasswordRequestToken(GenericAPIView):
                         user=user,
                         user_agent=request.META.get(HTTP_USER_AGENT_HEADER, ""),
                         ip_address=request.META.get(HTTP_IP_ADDRESS_HEADER, ""),
+                        origin=request.META.get(HTTP_ORIGIN_HEADER, "")
                     )
                 # send a signal that the password token was created
                 # let whoever receives this signal handle sending the email for the password reset

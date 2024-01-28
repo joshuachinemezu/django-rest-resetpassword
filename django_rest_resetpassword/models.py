@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 
 from django_rest_resetpassword.tokens import get_token_generator
@@ -58,6 +58,12 @@ class ResetPasswordToken(models.Model):
     user_agent = models.CharField(
         max_length=256,
         verbose_name=_("HTTP User Agent"),
+        default="",
+        blank=True,
+    )
+    origin = models.CharField(
+        max_length=256,
+        verbose_name=_("Request Origin"),
         default="",
         blank=True,
     )
